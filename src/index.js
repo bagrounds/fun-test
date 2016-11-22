@@ -8,7 +8,7 @@
 
   /* imports */
   var specifier = require('specifier')
-  var typeCheck = require('type-check')
+  var typeCheck = require('type-check').typeCheck
 
   /* exports */
   module.exports = funTest
