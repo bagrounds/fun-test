@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://gitlab.com/bagrounds/fun-test/issues"
   },
-  "homepage": "https://gitlab.com/bagrounds/fun-test#README"
+  "homepage": "https://gitlab.com/bagrounds/fun-test#README",
+  "dependencies": {
+    "specifier": "^0.5.1"
+  }
 }
