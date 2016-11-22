@@ -1,0 +1,24 @@
+{
+  "name": "fun-test",
+  "version": "0.1.0",
+  "description": "A simple function tester",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/bagrounds/fun-test.git"
+  },
+  "keywords": [
+    "test",
+    "function",
+    "simple"
+  ],
+  "author": "bagrounds <bagrounds@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/bagrounds/fun-test/issues"
+  },
+  "homepage": "https://gitlab.com/bagrounds/fun-test#README"
+}
