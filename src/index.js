@@ -34,26 +34,21 @@
    *
    * @param {Object} options all function parameters
    * @param {*} options.input to test
-   * @param {Function} options.fut function under test
    * @param {Function} options.verifier for output of fut given input
-   * @param {Function} reporter handles verifier results
    */
-  function funTest (options, reporter) {
-    var error = specificationChecker(options)
+  function funTest (options) {
+    assert(!specificationChecker(options))
 
-    if (error) {
-      reporter(error)
-      return
+    return function (fut, reporter) {
+      fut(options.input, function (error, result) {
+        var verifierOptions = {
+          error: error,
+          result: result
+        }
+
+        options.verifier(verifierOptions, reporter)
+      })
     }
-
-    options.fut(options.input, function (error, result) {
-      var verifierOptions = {
-        error: error,
-        result: result
-      }
-
-      options.verifier(verifierOptions, reporter)
-    })
   }
 
   function isFunction (candidate) {
