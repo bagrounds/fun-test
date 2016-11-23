@@ -41,14 +41,18 @@
     assert(!specificationChecker(options))
 
     return function (fut, reporter) {
-      fut(options.input, function (error, result) {
-        var verifierOptions = {
-          error: error,
-          result: result
-        }
+      try {
+        fut(options.input, function (error, result) {
+          var verifierOptions = {
+            error: error,
+            result: result
+          }
 
-        options.verifier(verifierOptions, reporter)
-      })
+          options.verifier(verifierOptions, reporter)
+        })
+      } catch (error) {
+        reporter(error)
+      }
     }
   }
 
