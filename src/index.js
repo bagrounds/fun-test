@@ -9,6 +9,7 @@
   /* imports */
   var specifier = require('specifier')
   var typeCheck = require('type-check').typeCheck
+  var assert = require('assert')
 
   /* exports */
   module.exports = funTest
