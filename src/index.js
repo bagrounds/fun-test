@@ -9,7 +9,7 @@
   /* imports */
   var specifier = require('specifier')
   var typeCheck = require('type-check').typeCheck
-  var assert = require('assert')
+  var assert = require('power-assert')
 
   /* exports */
   module.exports = funTest
