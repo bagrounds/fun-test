@@ -39,7 +39,7 @@
 
     assert(!error, error)
 
-    return function (fut, reporter) {
+    return function test (fut, reporter) {
       try {
         fut(options.input, function (error, result) {
           var verifierOptions = {
@@ -50,7 +50,11 @@
           options.verifier(verifierOptions, reporter)
         })
       } catch (error) {
-        reporter(error)
+        var verifierOptions = {
+          error: error
+        }
+
+        options.verifier(verifierOptions, reporter)
       }
     }
   }
