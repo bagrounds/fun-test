@@ -15,9 +15,6 @@
   module.exports = funTest
 
   var optionsSpec = {
-    fut: [
-      isFunction
-    ],
     input: [
     ],
     verifier: [
