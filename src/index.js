@@ -33,6 +33,7 @@
    * @param {Object} options all function parameters
    * @param {*} options.input to test
    * @param {Function} options.verifier for output of fut given input
+   * @param {Function} [options.transformer] applied to fut prior to test
    */
   function funTest (options) {
     var error = specificationChecker(options)
@@ -41,6 +42,10 @@
 
     return function test (fut, reporter) {
       try {
+        if (options.transformer) {
+          fut = options.transformer(fut)
+        }
+
         fut(options.input, function (error, result) {
           var verifierOptions = {
             error: error,
