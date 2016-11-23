@@ -35,7 +35,9 @@
    * @param {Function} options.verifier for output of fut given input
    */
   function funTest (options) {
-    assert(!specificationChecker(options))
+    var error = specificationChecker(options)
+
+    assert(!error, error)
 
     return function (fut, reporter) {
       try {
