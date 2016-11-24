@@ -46,10 +46,10 @@
           fut = options.transformer(fut)
         }
 
-        fut(options.input, function (error, result) {
+        fut(options.input, function (error, output) {
           var verifierOptions = {
             error: error,
-            result: result
+            output: output
           }
 
           options.verifier(verifierOptions, reporter)
