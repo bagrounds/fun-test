@@ -3,17 +3,17 @@
   'use strict'
 
   /* imports */
-  var funTestTests = require('fun-test-tests')
+  var tests = require('fun-test-tests')
   var funTestRunner = require('fun-test-runner')
 
-  var fut = require('../src/index.js')
+  var subject = require('../src/index.js')
 
   main()
 
   function main () {
     var options = {
-      fut: fut,
-      testSuite: funTestTests
+      subject: subject,
+      tests: tests
     }
 
     funTestRunner(options, function (error) {
