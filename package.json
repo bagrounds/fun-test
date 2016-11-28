@@ -27,6 +27,6 @@
   },
   "devDependencies": {
     "fun-test-runner": "^0.2.1",
-    "fun-test-tests": "^0.2.6"
+    "fun-test-tests": "latest"
   }
 }
