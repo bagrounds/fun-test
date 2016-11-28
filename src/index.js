@@ -9,7 +9,6 @@
   /* imports */
   var specifier = require('specifier')
   var typeCheck = require('type-check').typeCheck
-  var assert = require('power-assert')
 
   /* exports */
   module.exports = funTest
@@ -32,21 +31,23 @@
    *
    * @param {Object} options all function parameters
    * @param {*} options.input to test
-   * @param {Function} options.verifier for output of fut given input
-   * @param {Function} [options.transformer] applied to fut prior to test
+   * @param {Function} options.verifier for output of subject given input
+   * @param {Function} [options.transformer] applied to subject prior to test
    */
   function funTest (options) {
     var error = specificationChecker(options)
 
-    assert(!error, error)
+    if (error) {
+      throw error
+    }
 
-    return function test (fut, reporter) {
+    return function test (subject, reporter) {
       try {
         if (options.transformer) {
-          fut = options.transformer(fut)
+          subject = options.transformer(subject)
         }
 
-        fut(options.input, function (error, output) {
+        subject(options.input, function (error, output) {
           var verifierOptions = {
             error: error,
             output: output
