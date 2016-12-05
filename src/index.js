@@ -33,6 +33,7 @@
    * @param {*} options.input to test
    * @param {Function} options.verifier for output of subject given input
    * @param {Function} [options.transformer] applied to subject prior to test
+   * @return {Function} test(subject, reporter) runs the test defined here
    */
   function funTest (options) {
     specificationChecker(options)
