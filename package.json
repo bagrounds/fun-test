@@ -24,7 +24,8 @@
   },
   "homepage": "https://gitlab.com/bagrounds/fun-test#README",
   "dependencies": {
-    "specifier": "^0.6.0",
+    "fun-assert": "^0.2.0",
+    "specifier": "^0.6.1",
     "type-check": "^0.3.2"
   },
   "devDependencies": {
