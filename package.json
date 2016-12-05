@@ -4,7 +4,7 @@
   "description": "A simple function tester",
   "main": "src/index.js",
   "scripts": {
-    "test": "./test/index.js"
+    "test": "istanbul cover ./test/index.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "fun-test-runner": "^0.3.0",
-    "fun-test-tests": "latest"
+    "fun-test-tests": "latest",
+    "istanbul": "^0.4.5"
   }
 }
