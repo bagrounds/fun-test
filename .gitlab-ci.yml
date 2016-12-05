@@ -16,6 +16,9 @@
   },
   "pages": {
     "stage": "deploy",
+    "script": [
+      "npm run pages"
+    ],
     "environment": "pages",
     "artifacts": {
       "paths": [
