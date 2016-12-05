@@ -2,5 +2,5 @@
 
 A simple function tester.
 
-## [Test Coverage](coverage/lcov-report/index.html)
+## [Test Coverage](bagrounds.gitlab.io/fun-test/coverage/lcov-report/index.html)
 
