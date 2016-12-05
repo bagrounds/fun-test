@@ -28,6 +28,7 @@
     "type-check": "^0.3.2"
   },
   "devDependencies": {
+    "fun-assert": "^0.2.0",
     "fun-test-runner": "^0.3.0",
     "fun-test-tests": "latest",
     "istanbul": "^0.4.5",
