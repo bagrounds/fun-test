@@ -24,9 +24,6 @@
       "paths": [
         "public"
       ]
-    },
-    "only": [
-      "pages"
-    ]
+    }
   }
 }
