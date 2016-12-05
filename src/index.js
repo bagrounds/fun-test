@@ -36,11 +36,7 @@
    * @param {Function} [options.transformer] applied to subject prior to test
    */
   function funTest (options) {
-    var error = specificationChecker(options)
-
-    if (error) {
-      throw error
-    }
+    specificationChecker(options)
 
     return function test (subject, reporter) {
       try {
