@@ -18,7 +18,7 @@
     input: [
     ],
     verifier: [
-      funAssert.type('function')
+      funAssert.type('Function')
     ]
   }
 
