@@ -8,7 +8,6 @@
 
   /* imports */
   var specifier = require('specifier')
-  var typeCheck = require('type-check').typeCheck
   var funAssert = require('fun-assert')
 
   /* exports */
