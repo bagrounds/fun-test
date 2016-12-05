@@ -2,6 +2,8 @@
 
 rm -rf public coverage
 
+npm install
+
 npm test
 
 mkdir public
