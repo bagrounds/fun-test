@@ -2,5 +2,7 @@
 
 A simple function tester.
 
-## [Test Coverage](bagrounds.gitlab.io/fun-test/coverage/lcov-report/index.html)
+## [Test Coverage][1]
+
+[1]: https://bagrounds.gitlab.io/fun-test/coverage/lcov-report/index.html
 
