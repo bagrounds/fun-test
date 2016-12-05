@@ -8,7 +8,8 @@
     "test": "istanbul cover ./test/index.js",
     "pages-index": "showdown makehtml -i README.md -o public/index.html",
     "pages": "./script/pages.sh",
-    "lint": "eslint --ignore-path .gitignore ."
+    "lint": "eslint --ignore-path .gitignore .",
+    "document": "jsdoc --destination docs -c .jsdoc.json -r"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "fun-test-runner": "^0.3.0",
     "fun-test-tests": "latest",
     "istanbul": "^0.4.5",
+    "jsdoc": "^3.4.3",
     "showdown": "^1.5.1"
   }
 }
