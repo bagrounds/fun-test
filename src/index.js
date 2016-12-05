@@ -47,7 +47,12 @@
         subject(options.input, options.verifier)
         reporter()
       } catch (error) {
-        reporter(error)
+        try {
+          options.verifier(error)
+          reporter()
+        } catch (e) {
+          reporter(e)
+        }
       }
     }
   }
