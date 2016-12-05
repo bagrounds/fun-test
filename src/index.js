@@ -9,6 +9,7 @@
   /* imports */
   var specifier = require('specifier')
   var typeCheck = require('type-check').typeCheck
+  var funAssert = require('fun-assert')
 
   /* exports */
   module.exports = funTest
@@ -17,7 +18,7 @@
     input: [
     ],
     verifier: [
-      isFunction
+      funAssert.type('Function')
     ]
   }
 
@@ -47,30 +48,12 @@
           subject = options.transformer(subject)
         }
 
-        subject(options.input, function (error, output) {
-          var verifierOptions = {
-            error: error,
-            output: output
-          }
-
-          options.verifier(verifierOptions, reporter)
-        })
+        subject(options.input, options.verifier)
       } catch (error) {
-        var verifierOptions = {
-          error: error
-        }
-
-        options.verifier(verifierOptions, reporter)
+        reporter(error)
       }
-    }
-  }
 
-  function isFunction (candidate) {
-    var ok = typeCheck('Function', candidate)
-
-    if (!ok) {
-      var message = 'Should be a function.'
-      return new Error(message)
+      reporter()
     }
   }
 })()
