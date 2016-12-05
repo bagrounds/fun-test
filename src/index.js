@@ -49,11 +49,10 @@
         }
 
         subject(options.input, options.verifier)
+        reporter()
       } catch (error) {
         reporter(error)
       }
-
-      reporter()
     }
   }
 })()
