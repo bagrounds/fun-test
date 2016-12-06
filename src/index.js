@@ -48,6 +48,7 @@
    * @param {Function} options.verifier for output of subject given input
    * @param {Function} [options.transformer] applied to subject prior to test
    * @param {Number} [options.timeout] ms to wait for callback to be called
+   * @param {Boolean} [options.sync] is the subject synchronous?
    * @return {Function} test(subject, reporter) runs the test defined here
    */
   function funTest (options) {
@@ -59,6 +60,18 @@
     var timeout = options.timeout || DEFAULT_TIMEOUT
 
     return function test (subject, reporter) {
+      if (options.sync) {
+        var original = subject
+        subject = function (options, callback) {
+          try {
+            var result = original(options)
+            callback(null, result)
+          } catch (error) {
+            callback(error)
+          }
+        }
+      }
+
       if (transformer) {
         subject = transformer(subject)
       }
