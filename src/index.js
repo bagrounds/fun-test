@@ -10,6 +10,8 @@
   var specifier = require('specifier')
   var funAssert = require('fun-assert')
 
+  var isFunction = funAssert.type('Function')
+
   /* exports */
   module.exports = funTest
 
@@ -17,11 +19,22 @@
     input: [
     ],
     verifier: [
-      funAssert.type('Function')
+      isFunction
     ]
   }
 
-  var specificationChecker = specifier(optionsSpec)
+  var validateOptions = specifier(optionsSpec)
+
+  var testSpec = {
+    subject: [
+      isFunction
+    ],
+    reporter: [
+      isFunction
+    ]
+  }
+
+  var validateTestInput = specifier(testSpec)
 
   /**
    * funTest is a simple function tester.
@@ -36,19 +49,28 @@
    * @return {Function} test(subject, reporter) runs the test defined here
    */
   function funTest (options) {
-    specificationChecker(options)
+    validateOptions(options)
+
+    var input = options.input
+    var verifier = options.verifier
+    var transformer = options.transformer
 
     return function test (subject, reporter) {
-      try {
-        if (options.transformer) {
-          subject = options.transformer(subject)
-        }
+      if (transformer) {
+        subject = transformer(subject)
+      }
 
-        subject(options.input, options.verifier)
+      validateTestInput({
+        subject: subject,
+        reporter: reporter
+      })
+
+      try {
+        subject(input, verifier)
         reporter()
       } catch (error) {
         try {
-          options.verifier(error)
+          verifier(error)
           reporter()
         } catch (e) {
           reporter(e)
