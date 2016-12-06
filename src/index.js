@@ -44,10 +44,8 @@
           subject = options.transformer(subject)
         }
 
-        subject(options.input, function (error, result) {
-          options.verifier(error, result)
-          reporter()
-        })
+        subject(options.input, options.verifier)
+        reporter()
       } catch (error) {
         try {
           options.verifier(error)
