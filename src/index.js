@@ -10,6 +10,7 @@
   var specifier = require('specifier')
   var funAssert = require('fun-assert')
 
+  var DEFAULT_TIMEOUT = 1000
   var isFunction = funAssert.type('Function')
 
   /* exports */
@@ -46,6 +47,7 @@
    * @param {*} options.input to test
    * @param {Function} options.verifier for output of subject given input
    * @param {Function} [options.transformer] applied to subject prior to test
+   * @param {Number} [options.timeout] ms to wait for callback to be called
    * @return {Function} test(subject, reporter) runs the test defined here
    */
   function funTest (options) {
@@ -54,6 +56,7 @@
     var input = options.input
     var verifier = options.verifier
     var transformer = options.transformer
+    var timeout = options.timeout || DEFAULT_TIMEOUT
 
     return function test (subject, reporter) {
       if (transformer) {
@@ -65,17 +68,41 @@
         reporter: reporter
       })
 
-      try {
-        subject(input, verifier)
-        reporter()
-      } catch (error) {
-        try {
-          verifier(error)
-          reporter()
-        } catch (e) {
-          reporter(e)
-        }
+      var executeOptions = {
+        subject: subject,
+        input: input,
+        verifier: verifier,
+        timeout: timeout
       }
+
+      execute(executeOptions, reporter)
+    }
+  }
+
+  function execute (options, reporter) {
+    var timeout = setTimeout(function () {
+      var error = new Error('Timeout of ' + options.timeout + ' exceeded.')
+
+      reporter(error)
+    }, options.timeout)
+
+    function verifierRunner (error, result) {
+      clearTimeout(timeout)
+
+      try {
+        options.verifier(error, result)
+      } catch (e) {
+        reporter(e)
+        return
+      }
+
+      reporter()
+    }
+
+    try {
+      options.subject(options.input, verifierRunner)
+    } catch (error) {
+      verifierRunner(error)
     }
   }
 })()
