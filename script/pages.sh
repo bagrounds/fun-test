@@ -6,7 +6,7 @@ npm install
 
 mkdir public
 
-npm test
+npm run coverage
 
 mv coverage public/
 
