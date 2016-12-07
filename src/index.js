@@ -60,6 +60,10 @@
     var timeout = options.timeout || DEFAULT_TIMEOUT
 
     return function test (subject, reporter) {
+      if (transformer) {
+        subject = transformer(subject)
+      }
+
       if (options.sync) {
         var original = subject
         subject = function (options, callback) {
@@ -70,10 +74,6 @@
             callback(error)
           }
         }
-      }
-
-      if (transformer) {
-        subject = transformer(subject)
       }
 
       validateTestInput({
