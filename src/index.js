@@ -9,33 +9,33 @@
   /* imports */
   var specifier = require('specifier')
   var funAssert = require('fun-assert')
+  var defaults = require('lodash.defaults')
 
-  var DEFAULT_TIMEOUT = 1000
+  var defaultOptions = {
+    timeout: 1000,
+    error: funAssert.falsey,
+    result: function () {}
+  }
+
   var isFunction = funAssert.type('Function')
+  var isNumber = funAssert.type('Number')
 
   /* exports */
   module.exports = funTest
 
   var optionsSpec = {
-    input: [
-    ],
-    verifier: [
+    error: [
       isFunction
+    ],
+    result: [
+      isFunction
+    ],
+    timeout: [
+      isNumber
     ]
   }
 
   var validateOptions = specifier(optionsSpec)
-
-  var testSpec = {
-    subject: [
-      isFunction
-    ],
-    reporter: [
-      isFunction
-    ]
-  }
-
-  var validateTestInput = specifier(testSpec)
 
   /**
    * funTest is a simple function tester.
@@ -44,79 +44,86 @@
    * @alias fun-test
    *
    * @param {Object} options all function parameters
-   * @param {*} options.input to test
-   * @param {Function} options.verifier for output of subject given input
+   * @param {*} [options.input] to test
+   * @param {Function} [options.result] assertion function for result
+   * @param {Function} [options.error] assertion function for error
    * @param {Function} [options.transformer] applied to subject prior to test
    * @param {Number} [options.timeout] ms to wait for callback to be called
    * @param {Boolean} [options.sync] is the subject synchronous?
    * @return {Function} test(subject, reporter) runs the test defined here
    */
   function funTest (options) {
-    validateOptions(options)
-
-    var input = options.input
-    var verifier = options.verifier
-    var transformer = options.transformer
-    var timeout = options.timeout || DEFAULT_TIMEOUT
+    options = validateOptions(defaults(options, defaultOptions))
 
     return function test (subject, reporter) {
-      if (transformer) {
-        subject = transformer(subject)
-      }
+      subject = transform(subject, options.transformer, options.sync)
 
-      if (options.sync) {
-        var original = subject
-        subject = function (options, callback) {
-          try {
-            var result = original(options)
-            callback(null, result)
-          } catch (error) {
-            callback(error)
+      var timeout = setTimeout(
+        function () {
+          var error = new Error('Timeout of ' + timeout + ' exceeded.')
+
+          reporter(error)
+        },
+        options.timeout
+      )
+
+      try {
+        subject(options.input, function (error, result) {
+          var assertionError = catchError(options.error, error)
+
+          if (!assertionError) {
+            assertionError = catchError(options.result, result)
           }
-        }
+
+          clearTimeout(timeout)
+          reporter(assertionError)
+        })
+      } catch (error) {
+        var assertionError = catchError(options.error, error)
+
+        reporter(assertionError)
+        clearTimeout(timeout)
       }
-
-      validateTestInput({
-        subject: subject,
-        reporter: reporter
-      })
-
-      var executeOptions = {
-        subject: subject,
-        input: input,
-        verifier: verifier,
-        timeout: timeout
-      }
-
-      execute(executeOptions, reporter)
     }
   }
 
-  function execute (options, reporter) {
-    var timeout = setTimeout(function () {
-      var error = new Error('Timeout of ' + options.timeout + ' exceeded.')
+  function transform (subject, transformer, sync) {
+    if (transformer) {
+      subject = transformer(subject)
+    }
 
-      reporter(error)
-    }, options.timeout)
+    if (sync) {
+      subject = syncToAsync(subject)
+    }
 
-    function verifierRunner (error, result) {
-      clearTimeout(timeout)
+    return subject
+  }
+
+  function syncToAsync (syncFunction) {
+    return function (options, callback) {
+      var result
+      var error
 
       try {
-        options.verifier(error, result)
+        result = syncFunction(options)
       } catch (e) {
-        reporter(e)
-        return
+        error = e
       }
 
-      reporter()
+      callback(error, result)
     }
+  }
+
+  function catchError (aFunction, input) {
+    var error
 
     try {
-      options.subject(options.input, verifierRunner)
-    } catch (error) {
-      verifierRunner(error)
+      aFunction(input)
+    } catch (e) {
+      error = e
     }
+
+    return error
   }
 })()
 

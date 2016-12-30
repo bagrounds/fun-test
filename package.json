@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "pretest": "npm run lint",
-    "test": "tap -Rspec --coverage-report=text ./test/index.js",
+    "test": "tap -Rtap --coverage-report=text-summary ./test/index.js",
     "coverage": "tap --coverage-report=lcov ./test/index.js",
     "pages-index": "showdown makehtml -i README.md -o public/index.html",
     "pages": "./script/pages.sh",
@@ -28,14 +28,14 @@
   },
   "homepage": "https://gitlab.com/bagrounds/fun-test#README",
   "dependencies": {
-    "fun-assert": "^0.2.0",
-    "specifier": "^0.6.1"
+    "fun-assert": "^0.5.0",
+    "lodash.defaults": "^4.2.0",
+    "specifier": "^0.8.1"
   },
   "devDependencies": {
     "eslint": "^3.11.1",
-    "fun-assert": "^0.2.0",
     "fun-test-runner": "^0.3.0",
-    "fun-test-tests": "latest",
+    "fun-test-tests": "^0.11.1",
     "jsdoc": "^3.4.3",
     "showdown": "^1.5.1",
     "tap": "^8.0.1"
