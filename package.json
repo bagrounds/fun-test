@@ -6,11 +6,16 @@
   "scripts": {
     "pretest": "npm run lint",
     "test": "tap -Rtap --coverage-report=text-summary ./test/index.js",
+    "predependencies": "mkdir -p img",
+    "dependencies": "madge . --image img/dependencies.svg -x 'test|coverage|docs'",
+    "predependencies-test": "mkdir -p img",
+    "dependencies-test": "madge . --image img/dependencies-test.svg -x 'coverage|docs'",
     "coverage": "tap --coverage-report=lcov ./test/index.js",
     "pages-index": "showdown makehtml -i README.md -o public/index.html",
     "pages": "./script/pages.sh",
-    "lint": "eslint --ignore-path .gitignore .",
-    "document": "jsdoc --destination docs -c .jsdoc.json -r"
+    "lint": "eslint --ignore-path .gitignore --fix .",
+    "document": "jsdoc --destination docs -c .jsdoc.json -r",
+    "readme": "cat readme/* > README.md"
   },
   "repository": {
     "type": "git",
