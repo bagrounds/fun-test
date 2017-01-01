@@ -35,11 +35,12 @@
   "dependencies": {
     "fun-assert": "^0.5.0",
     "lodash.defaults": "^4.2.0",
-    "specifier": "^0.8.1"
+    "specifier": "^0.8.1",
+    "stringify-anything": "^0.2.0"
   },
   "devDependencies": {
     "eslint": "^3.11.1",
-    "fun-test-runner": "^0.3.0",
+    "fun-test-runner": "^0.4.1",
     "fun-test-tests": "latest",
     "jsdoc": "^3.4.3",
     "showdown": "^1.5.1",

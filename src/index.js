@@ -10,11 +10,15 @@
   var specifier = require('specifier')
   var funAssert = require('fun-assert')
   var defaults = require('lodash.defaults')
+  var stringify = require('stringify-anything')
+
+  var defaultErrorAssertion = funAssert.falsey
 
   var defaultOptions = {
     timeout: 1000,
-    error: funAssert.falsey,
-    result: function () {}
+    error: defaultErrorAssertion,
+    result: identity,
+    transformer: identity
   }
 
   var isFunction = funAssert.type('Function')
@@ -55,7 +59,26 @@
   function funTest (options) {
     options = validateOptions(defaults(options, defaultOptions))
 
-    return function test (subject, reporter) {
+    function toString () {
+      var string = ''
+      var subject = 'subject'
+
+      if (options.transformer !== identity) {
+        subject = stringify(options.transformer) + '(' + subject + ')'
+      }
+
+      string += subject + '(' + stringify(options.input) + ') -> '
+
+      string += 'error should ' + stringify(options.error)
+
+      if (options.result !== identity) {
+        string += ', result should ' + stringify(options.result)
+      }
+
+      return string
+    }
+
+    function test (subject, reporter) {
       subject = transform(subject, options.transformer, options.sync)
 
       var timeout = setTimeout(
@@ -85,6 +108,10 @@
         clearTimeout(timeout)
       }
     }
+
+    test.toString = toString
+
+    return test
   }
 
   function transform (subject, transformer, sync) {
@@ -124,6 +151,10 @@
     }
 
     return error
+  }
+
+  function identity (subject) {
+    return subject
   }
 })()
 
