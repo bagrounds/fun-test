@@ -64,7 +64,7 @@
       var subjectString = subject ? stringify(subject) : 'subject'
 
       if (options.transformer !== identity) {
-        subject = options.transformer.toString(subjectString)
+        subject = stringify(options.transformer, subjectString)
       }
 
       string += subject + '(' + stringify(options.input) + ') -> '
