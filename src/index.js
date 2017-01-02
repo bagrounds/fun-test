@@ -59,12 +59,12 @@
   function funTest (options) {
     options = validateOptions(defaults(options, defaultOptions))
 
-    function toString () {
+    function toString (subject) {
       var string = ''
-      var subject = 'subject'
+      var subjectString = subject ? stringify(subject) : 'subject'
 
       if (options.transformer !== identity) {
-        subject = stringify(options.transformer) + '(' + subject + ')'
+        subject = options.transformer.toString(subjectString)
       }
 
       string += subject + '(' + stringify(options.input) + ') -> '
