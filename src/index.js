@@ -63,11 +63,11 @@
       var string = ''
       var subjectString = subject ? stringify(subject) : 'subject'
 
-      if (options.transformer !== identity) {
-        subject = stringify(options.transformer, subjectString)
+      if (options.transformer !== defaultOptions.transformer) {
+        subjectString = stringify(options.transformer, subject)
       }
 
-      string += subject + '(' + stringify(options.input) + ') -> '
+      string += subjectString + '(' + stringify(options.input) + ') -> '
 
       string += 'error should ' + stringify(options.error)
 
