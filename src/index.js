@@ -11,6 +11,7 @@
   var funAssert = require('fun-assert')
   var defaults = require('lodash.defaults')
   var stringify = require('stringify-anything')
+  var sync = require('./sync')
 
   var defaultErrorAssertion = funAssert.falsey
 
@@ -26,6 +27,7 @@
 
   /* exports */
   module.exports = funTest
+  module.exports.sync = sync
 
   var optionsSpec = {
     error: [
