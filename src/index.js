@@ -10,8 +10,6 @@
   var specifier = require('specifier')
   var funAssert = require('fun-assert')
   var defaults = require('lodash.defaults')
-  var stringify = require('stringify-anything')
-  var sync = require('./sync')
 
   var defaultErrorAssertion = funAssert.falsey
 
@@ -27,7 +25,6 @@
 
   /* exports */
   module.exports = funTest
-  module.exports.sync = sync
 
   var optionsSpec = {
     error: [
@@ -61,25 +58,6 @@
   function funTest (options) {
     options = validateOptions(defaults(options, defaultOptions))
 
-    function toString (subject) {
-      var string = ''
-      var subjectString = subject ? stringify(subject) : 'subject'
-
-      if (options.transformer !== defaultOptions.transformer) {
-        subjectString = stringify(options.transformer, subject)
-      }
-
-      string += subjectString + '(' + stringify(options.input) + ') -> '
-
-      string += 'error should ' + stringify(options.error)
-
-      if (options.result !== identity) {
-        string += ', result should ' + stringify(options.result)
-      }
-
-      return string
-    }
-
     function test (subject, reporter) {
       subject = transform(subject, options.transformer, options.sync)
 
@@ -87,26 +65,28 @@
         function () {
           var error = new Error('Timeout of ' + timeout + ' exceeded.')
 
-          reporter(error)
+          reporter(error, options)
         },
         options.timeout
       )
 
+      function callback (error, result) {
+        var assertionError = catchError(options.error, error)
+
+        if (!assertionError) {
+          assertionError = catchError(options.result, result)
+        }
+
+        clearTimeout(timeout)
+        reporter(assertionError, options)
+      }
+
       try {
-        subject(options.input, function (error, result) {
-          var assertionError = catchError(options.error, error)
-
-          if (!assertionError) {
-            assertionError = catchError(options.result, result)
-          }
-
-          clearTimeout(timeout)
-          reporter(assertionError)
-        })
+        subject(options.input, callback)
       } catch (error) {
         var assertionError = catchError(options.error, error)
 
-        reporter(assertionError)
+        reporter(assertionError, options)
         clearTimeout(timeout)
       }
     }
