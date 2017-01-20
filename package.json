@@ -1,6 +1,6 @@
 {
   "name": "fun-test",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "A simple function tester",
   "main": "src/index.js",
   "scripts": {
