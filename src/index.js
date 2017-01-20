@@ -7,38 +7,24 @@
   'use strict'
 
   /* imports */
-  var specifier = require('specifier')
   var funAssert = require('fun-assert')
   var defaults = require('lodash.defaults')
 
-  var defaultErrorAssertion = funAssert.falsey
-
-  var defaultOptions = {
-    timeout: 1000,
-    error: defaultErrorAssertion,
-    result: identity,
-    transformer: identity
+  var DEFAULT_OPTIONS = {
+    input: [],
+    error: funAssert.falsey,
+    result: funAssert.nothing
   }
 
-  var isFunction = funAssert.type('Function')
-  var isNumber = funAssert.type('Number')
+  var INPUT_TYPE = '{input: Array, ' +
+    'error: Function, ' +
+    'result: Function, ' +
+    'transformer: Maybe Function}'
+
+  var inputChecker = funAssert.type(INPUT_TYPE)
 
   /* exports */
   module.exports = funTest
-
-  var optionsSpec = {
-    error: [
-      isFunction
-    ],
-    result: [
-      isFunction
-    ],
-    timeout: [
-      isNumber
-    ]
-  }
-
-  var validateOptions = specifier(optionsSpec)
 
   /**
    * funTest is a simple function tester.
@@ -47,96 +33,46 @@
    * @alias fun-test
    *
    * @param {Object} options all function parameters
-   * @param {*} [options.input] to test
+   * @param {Array} [options.input] arguments for subject
    * @param {Function} [options.result] assertion function for result
    * @param {Function} [options.error] assertion function for error
    * @param {Function} [options.transformer] applied to subject prior to test
-   * @param {Number} [options.timeout] ms to wait for callback to be called
-   * @param {Boolean} [options.sync] is the subject synchronous?
-   * @return {Function} test(subject, reporter) runs the test defined here
+   * @return {Function} test(subject) runs the test defined here
    */
   function funTest (options) {
-    options = validateOptions(defaults(options, defaultOptions))
+    options = inputChecker(defaults(options, DEFAULT_OPTIONS))
 
-    function test (subject, reporter) {
-      subject = transform(subject, options.transformer, options.sync)
+    return function test (subject) {
+      var testee = transform(subject, options.transformer)
 
-      var timeout = setTimeout(
-        function () {
-          var error = new Error('Timeout of ' + timeout + ' exceeded.')
-
-          reporter(error, options)
-        },
-        options.timeout
-      )
-
-      function callback (error, result) {
-        var assertionError = catchError(options.error, error)
-
-        if (!assertionError) {
-          assertionError = catchError(options.result, result)
-        }
-
-        clearTimeout(timeout)
-        reporter(assertionError, options)
-      }
+      var error, result
 
       try {
-        subject(options.input, callback)
-      } catch (error) {
-        var assertionError = catchError(options.error, error)
-
-        reporter(assertionError, options)
-        clearTimeout(timeout)
-      }
-    }
-
-    test.toString = toString
-
-    return test
-  }
-
-  function transform (subject, transformer, sync) {
-    if (transformer) {
-      subject = transformer(subject)
-    }
-
-    if (sync) {
-      subject = syncToAsync(subject)
-    }
-
-    return subject
-  }
-
-  function syncToAsync (syncFunction) {
-    return function (options, callback) {
-      var result
-      var error
-
-      try {
-        result = syncFunction(options)
+        result = testee.apply(null, options.input)
       } catch (e) {
         error = e
       }
 
-      callback(error, result)
+      var assertionError = catchError(options.error, [error]) ||
+        catchError(options.result, [result])
+
+      return {
+        options: options,
+        error: assertionError
+      }
     }
   }
 
-  function catchError (aFunction, input) {
-    var error
-
+  function catchError (subject, input) {
     try {
-      aFunction(input)
-    } catch (e) {
-      error = e
+      subject.apply(null, input)
+    } catch (error) {
+      return error
     }
-
-    return error
   }
 
-  function identity (subject) {
-    return subject
+  function transform (subject, transformer) {
+    return transformer ? transformer(subject) : subject
   }
 })()
 

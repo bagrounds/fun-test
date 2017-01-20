@@ -6,20 +6,14 @@
   var tests = require('fun-test-tests')
   var funTestRunner = require('fun-test-runner')
 
-  var subject = require('../src/index.js')
+  var subject = require('../src/')
 
   main()
 
   function main () {
-    var options = {
+    funTestRunner({
       subject: subject,
       tests: tests
-    }
-
-    funTestRunner(options, function (error) {
-      error && console.error(error)
-
-      console.log('done')
     })
   }
 })()

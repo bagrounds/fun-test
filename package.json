@@ -35,7 +35,6 @@
   "dependencies": {
     "fun-assert": "latest",
     "lodash.defaults": "^4.2.0",
-    "specifier": "^0.8.1",
     "stringify-anything": "latest"
   },
   "devDependencies": {
@@ -44,6 +43,6 @@
     "fun-test-tests": "latest",
     "jsdoc": "^3.4.3",
     "showdown": "^1.5.1",
-    "tap": "^8.0.1"
+    "tap": "^9.0.3"
   }
 }
