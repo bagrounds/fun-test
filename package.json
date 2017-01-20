@@ -34,8 +34,7 @@
   "homepage": "https://gitlab.com/bagrounds/fun-test#README",
   "dependencies": {
     "fun-assert": "latest",
-    "lodash.defaults": "^4.2.0",
-    "stringify-anything": "latest"
+    "lodash.defaults": "^4.2.0"
   },
   "devDependencies": {
     "eslint": "^3.11.1",
