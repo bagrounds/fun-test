@@ -12,8 +12,8 @@
 
   var DEFAULT_OPTIONS = {
     input: [],
-    error: funAssert.falsey,
-    result: funAssert.nothing
+    error: funAssert.falsey(),
+    result: funAssert.pass()
   }
 
   var INPUT_TYPE = '{input: Array, ' +
