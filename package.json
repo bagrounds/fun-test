@@ -33,8 +33,13 @@
   },
   "homepage": "https://gitlab.com/bagrounds/fun-test#README",
   "dependencies": {
+    "data.task": "^3.1.1",
+    "fun-arrow": "^0.2.0",
     "fun-assert": "latest",
-    "lodash.defaults": "^4.2.0"
+    "fun-try": "^0.1.0",
+    "lodash.defaults": "^4.2.0",
+    "ramda": "^0.23.0",
+    "task-timeout": "^0.1.0"
   },
   "devDependencies": {
     "eslint": "^3.11.1",
