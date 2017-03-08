@@ -2,7 +2,6 @@
   'use strict'
 
   /* imports */
-  var funAssert = require('fun-assert')
   var Task = require('data.task')
   var R = require('ramda')
   var arrow = require('fun-arrow')
