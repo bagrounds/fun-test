@@ -74,36 +74,20 @@
     return function stage (subject, reporter) {
       return function transition (state) {
         var task = Task.of(state)
-          .map(debug('state:'))
           .map(options.input)
-          .map(debug('input:'))
           .chain(R.curry(options.action)(subject))
           .map(R.repeat(R.__, 2))
-          .map(debug('split:'))
           .map(arrow.second(R.always(state)))
-          .map(debug('second:'))
           .map(arrow.merge(options.update))
           .chain(funTry(options.assertion))
 
         return taskTimeout(task, options.timeout)
-          .map(debug('state:'))
           .map(R.objOf('state'))
-          .map(debug('objOf(state):'))
           .map(R.merge({ options: options }))
-          .map(debug('stateAndOptions:'))
           .map(reporter)
           .map(R.prop('state'))
-          .map(debug('final state:'))
           .chain(Task.of)
       }
-    }
-  }
-
-  function debug (message) {
-    return function (subject) {
-      //console.log(message, subject)
-
-      return subject
     }
   }
 })()
