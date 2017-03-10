@@ -10,6 +10,7 @@
   main()
 
   function main () {
+    console.log('1..' + tests.length)
     tests(subject, reporter).fork(testSuiteError, id)
   }
 
@@ -24,7 +25,7 @@
       stringify(options.options.assertion) + ' -> ' +
       stringify(options.state)
 
-    console.log(report)
+    console.log('ok - ' + report)
     return options
   }
 
