@@ -7,21 +7,26 @@
 
   /* exports */
   module.exports = {
-    action: defaultAction,
-    update: defaultUpdate,
+    input: identity,
+    action: applyTask,
+    update: output,
     assertion: funAssert.pass(),
-    timeout: 60000,
+    timeout: 1000,
     shouldThrow: false
   }
 
-  function defaultAction (subject, input) {
+  function applyTask (subject, input) {
     return new Task(function (onError, onSuccess) {
       onSuccess(subject.apply(null, input))
     })
   }
 
-  function defaultUpdate (output, state) {
+  function output (output, state) {
     return output
+  }
+
+  function identity (x) {
+    return x
   }
 })()
 
