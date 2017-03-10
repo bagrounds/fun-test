@@ -37,6 +37,7 @@
     "fun-arrow": "^0.2.0",
     "fun-assert": "latest",
     "fun-try": "^0.1.0",
+    "guarded": "^0.4.1",
     "lodash.defaults": "^4.2.0",
     "ramda": "^0.23.0",
     "task-timeout": "^0.1.0"
