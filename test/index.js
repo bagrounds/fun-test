@@ -1,36 +1,47 @@
-#!/usr/bin/env node
 ;(function () {
   'use strict'
 
   /* imports */
+  var funTest = require('../src/')
   var tests = require('./tests')
-  var subject = require('../src/index1.js')
-  var stringify = require('stringify-anything')
+  var id = require('fun-id')
 
   main()
 
+  function subject (x) {
+    return x * x
+  }
+
   function main () {
-    console.log('1..' + tests.length)
-    tests(subject, reporter).fork(testSuiteError, id)
+    tests.map(function (tests) {
+      console.log('1..' + tests.length)
+
+      tests
+        .map(funTest.of)
+        .reduce(funTest.concat, funTest.empty())(
+          {},
+          subject,
+        {
+          error: errorReporter,
+          success: successReporter
+        }).fork(finalError, id)
+    })
   }
 
-  function testSuiteError (error) {
-    console.log('TestSuiteError:', error)
+  function finalError (error) {
+    console.error('FINAL_ERROR:' + error.message)
   }
 
-  function reporter (options) {
-    var report = stringify(options.options.input) + ' -> ' +
-      stringify(options.options.action) + ' -> ' +
-      stringify(options.options.update) + ' -> ' +
-      stringify(options.options.assertion) + ' -> ' +
-      stringify(options.state)
+  function errorReporter (error) {
+    console.log('not ok - an error:', error.message)
 
-    console.log('ok - ' + report)
-    return options
+    return error
   }
 
-  function id (x) {
-    return x
+  function successReporter (state) {
+    console.log('ok - state:', state)
+
+    return state
   }
 })()
 

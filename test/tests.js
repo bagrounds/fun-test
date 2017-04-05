@@ -1,32 +1,41 @@
 ;(function () {
   'use strict'
 
+  /* imports */
   var Task = require('data.task')
-  var funTest = require('../src/index1.js')
   var funAssert = require('fun-assert')
-  var R = require('ramda')
+  var lens = require('fun-lens')
+  var compose = require('fun-compose')
+  var id = require('fun-id')
 
-  module.exports = funTest([
+  /* exports */
+  module.exports = [
     [
       {
-        input: R.always([[[
-          {
-            input: R.always([4])
-          }
-        ]]]),
-        assertion: funAssert.type('Function')
-      },
-      {
-        action: function testDouble (subject, input) {
-          return Task.of(input(R.compose(Task.of, double), R.identity))
+        action: function action (state, subject) {
+          return Task.of({ input: 4 })
         },
         assertion: funAssert.type('Object')
+      },
+      {
+        action: function action (state, subject) {
+          state.result = subject(state.input)
+          // throw Error('shit blew up')
+
+          return Task.of(state)
+        },
+        assertion: compose(
+          funAssert.type('Number'),
+          lens.get(['result'])
+        )
+      },
+      {
+        action: function action (state, subject) {
+          return Task.of('all done')
+        },
+        assertion: id
       }
     ]
-  ])
-
-  function double (x) {
-    return 2 * x
-  }
+  ]
 })()
 

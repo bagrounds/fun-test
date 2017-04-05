@@ -1,78 +1,52 @@
-/**
- * fun-test is a simple function tester.
- *
- * @module fun-test
- */
 ;(function () {
   'use strict'
 
   /* imports */
-  var funAssert = require('fun-assert')
-  var defaults = require('lodash.defaults')
-
-  var DEFAULT_OPTIONS = {
-    input: [],
-    error: funAssert.falsey(),
-    result: funAssert.pass()
-  }
-
-  var INPUT_TYPE = '{input: Array, ' +
-    'error: Function, ' +
-    'result: Function, ' +
-    'transformer: Maybe Function}'
-
-  var inputChecker = funAssert.type(INPUT_TYPE)
+  var flip = require('fun-flip')
+  var curry = require('fun-curry')
+  var Task = require('data.task')
+  var funTry = require('fun-try')
+  var id = require('fun-id')
+  var compose = require('fun-compose')
 
   /* exports */
-  module.exports = funTest
+  module.exports = {
+    concat: concat,
+    of: of,
+    empty: empty
+  }
+
+  function concat (t1, t2) {
+    return function (state, subject, reporter) {
+      return t1(state, subject, reporter)
+        .chain(curry(flip(t2))(reporter, subject))
+    }
+  }
 
   /**
-   * funTest is a simple function tester.
    *
-   * @function funTest
-   * @alias fun-test
+   * @param {Object} options - all function parameters
+   * @param {Function} options.action - State -> Task State
+   * @param {Function} options.assertion - State -> State | throws
+   * @param {Boolean} options.report - show this stage to reporter
+   * @param {Number} options.timeout - in ms
    *
-   * @param {Object} options all function parameters
-   * @param {Array} [options.input] arguments for subject
-   * @param {Function} [options.result] assertion function for result
-   * @param {Function} [options.error] assertion function for error
-   * @param {Function} [options.transformer] applied to subject prior to test
-   * @return {Function} test(subject) runs the test defined here
+   * @return (state, subject, reporter) -> Task State
    */
-  function funTest (options) {
-    options = inputChecker(defaults(options, DEFAULT_OPTIONS))
-
-    return function test (subject) {
-      var testee = transform(subject, options.transformer)
-
-      var error, result
-
-      try {
-        result = testee.apply(null, options.input)
-      } catch (e) {
-        error = e
-      }
-
-      var assertionError = catchError(options.error, [error]) ||
-        catchError(options.result, [result])
-
-      return {
-        options: options,
-        error: assertionError
-      }
+  function of (options) {
+    return function (state, subject, reporter) {
+      return funTry(options.action)(state, subject)
+        .chain(id)
+        .chain(funTry(options.assertion))
+        .map(reporter.success)
+        .orElse(compose(Task.of, reporter.error))
     }
   }
 
-  function catchError (subject, input) {
-    try {
-      subject.apply(null, input)
-    } catch (error) {
-      return error
+  function empty () {
+    return function (state, subject, reporter) {
+      return Task.of(state)
     }
-  }
-
-  function transform (subject, transformer) {
-    return transformer ? transformer(subject) : subject
   }
 })()
 

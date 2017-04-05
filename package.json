@@ -34,20 +34,19 @@
   "homepage": "https://gitlab.com/bagrounds/fun-test#README",
   "dependencies": {
     "data.task": "^3.1.1",
-    "fun-arrow": "^0.2.0",
-    "fun-assert": "latest",
+    "fun-assert": "^0.13.1",
+    "fun-compose": "^0.3.3",
+    "fun-curry": "^0.2.5",
+    "fun-flip": "^0.1.1",
+    "fun-id": "^0.1.0",
+    "fun-lens": "^0.2.1",
     "fun-try": "^0.1.0",
-    "guarded": "^0.4.1",
-    "lodash.defaults": "^4.2.0",
-    "ramda": "^0.23.0",
-    "task-timeout": "^0.1.0"
+    "guarded": "^0.5.3"
   },
   "devDependencies": {
-    "eslint": "^3.11.1",
-    "fun-test-runner": "latest",
-    "fun-test-tests": "latest",
+    "eslint": "^3.19.0",
     "jsdoc": "^3.4.3",
-    "showdown": "^1.5.1",
-    "tap": "^9.0.3"
+    "showdown": "^1.6.4",
+    "tap": "^10.3.1"
   }
 }
