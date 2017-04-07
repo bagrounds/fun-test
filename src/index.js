@@ -65,6 +65,7 @@
         .chain(funTry(config.assertion))
         .map(R.objOf('data'))
         .orElse(compose(Task.of, R.objOf('error')))
+        .map(R.merge({ previous: options.data }))
         .map(R.merge(config))
         .map(R.merge(options))
         .map(options.reporter)
