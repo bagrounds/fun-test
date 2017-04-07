@@ -18,13 +18,13 @@
     ],
     [
       {
-        action: function action (options) {
+        action: function getInput4 (options) {
           return Task.of({ input: 4 })
         },
         assertion: funAssert.type('Object')
       },
       {
-        action: function action (options) {
+        action: function applySubjectToDataInput (options) {
           return Task.of({
             result: options.subject(options.data.input)
           })
@@ -35,7 +35,7 @@
         )
       },
       {
-        action: function action (options) {
+        action: function allDone (options) {
           return Task.of('all done')
         },
         assertion: id
