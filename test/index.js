@@ -28,28 +28,33 @@
         .map(funTest.of)
         .reduce(funTest.concat, funTest.empty())({
           subject: subject,
-          reporter: {
-            error: errorReporter,
-            success: successReporter
-          }
+          reporter: reporter
         }).fork(finalError, id)
     })
+  }
+
+  function reporter (stuff) {
+    if (stuff.error) {
+      return reportError(stuff)
+    }
+
+    return reportSuccess(stuff)
   }
 
   function finalError (error) {
     console.error('FINAL_ERROR:' + error.message)
   }
 
-  function errorReporter (error) {
-    console.log('not ok - an error:', error.message)
+  function reportError (stuff) {
+    console.log('not ok - an error:', stuff.error.message)
 
-    return error
+    return stuff.error
   }
 
-  function successReporter (data) {
-    console.log('ok - data:', data)
+  function reportSuccess (stuff) {
+    console.log('ok - data:', stuff.data)
 
-    return data
+    return stuff.data
   }
 })()
 

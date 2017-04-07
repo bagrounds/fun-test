@@ -25,7 +25,6 @@
       },
       {
         action: function action (options) {
-          // throw Error('shit blew up')
           return Task.of({
             result: options.subject(options.data.input)
           })

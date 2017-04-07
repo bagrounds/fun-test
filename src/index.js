@@ -63,8 +63,11 @@
         .chain(funTry(config.action))
         .chain(id)
         .chain(funTry(config.assertion))
-        .map(options.reporter.success)
-        .orElse(compose(Task.of, options.reporter.error))
+        .map(R.objOf('data'))
+        .orElse(compose(Task.of, R.objOf('error')))
+        .map(R.merge(config))
+        .map(R.merge(options))
+        .map(options.reporter)
     }
   }
 
