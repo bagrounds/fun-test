@@ -44,7 +44,9 @@
     "fun-predicate": "^0.14.8",
     "fun-try": "^0.1.0",
     "guarded": "^0.5.3",
-    "ramda": "^0.23.0"
+    "json-stringify-safe": "^5.0.1",
+    "ramda": "^0.23.0",
+    "stringify-anything": "^0.5.7"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
