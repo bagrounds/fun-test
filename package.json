@@ -36,20 +36,18 @@
   "dependencies": {
     "data.task": "^3.1.1",
     "fun-apply": "^0.2.0",
-    "fun-assert": "^0.13.1",
     "fun-case": "^0.1.1",
     "fun-compose": "^0.3.3",
     "fun-id": "^0.1.0",
     "fun-lens": "^0.2.1",
     "fun-predicate": "^0.14.8",
     "fun-try": "^0.1.0",
-    "guarded": "^0.5.3",
-    "json-stringify-safe": "^5.0.1",
-    "ramda": "^0.23.0",
-    "stringify-anything": "^0.5.7"
+    "ramda": "^0.23.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
+    "fun-assert": "^0.13.1",
+    "fun-test-runner": "^0.7.0",
     "jsdoc": "^3.4.3",
     "showdown": "^1.6.4",
     "tap": "^10.3.1"

@@ -4,7 +4,7 @@
   /* imports */
   var tests = require('./tests')
   var id = require('fun-id')
-  var runner = require('./runner')
+  var runner = require('fun-test-runner')
 
   main()
 
