@@ -6,15 +6,16 @@
   "scripts": {
     "pretest": "npm run lint",
     "test": "tap -Rtap --coverage-report=text-summary ./test/index.js",
-    "predependencies": "mkdir -p img",
-    "dependencies": "madge . --image img/dependencies.svg -x 'test|coverage|docs'",
-    "predependencies-test": "mkdir -p img",
-    "dependencies-test": "madge . --image img/dependencies-test.svg -x 'coverage|docs'",
     "coverage": "tap --coverage-report=lcov ./test/index.js",
+    "predependencies": "mkdir -p img",
+    "dependencies": "madge . --image img/dependencies.svg -x 'test|coverage|docs' --include-npm",
+    "postdependencies": "npm run dependencies-test",
+    "dependencies-test": "madge . --image img/dependencies-test.svg -x 'coverage|docs' --include-npm",
     "pages-index": "showdown makehtml -i README.md -o public/index.html",
     "pages": "./script/pages.sh",
     "lint": "eslint --ignore-path .gitignore --fix .",
-    "document": "jsdoc --destination docs -c .jsdoc.json -r",
+    "predocument": "rm -rf docs",
+    "document": "jsdoc -c .jsdoc.json",
     "readme": "cat readme/* > README.md"
   },
   "repository": {
@@ -34,14 +35,16 @@
   "homepage": "https://gitlab.com/bagrounds/fun-test#README",
   "dependencies": {
     "data.task": "^3.1.1",
+    "fun-apply": "^0.2.0",
     "fun-assert": "^0.13.1",
+    "fun-case": "^0.1.1",
     "fun-compose": "^0.3.3",
-    "fun-curry": "^0.2.5",
-    "fun-flip": "^0.1.1",
     "fun-id": "^0.1.0",
     "fun-lens": "^0.2.1",
+    "fun-predicate": "^0.14.8",
     "fun-try": "^0.1.0",
-    "guarded": "^0.5.3"
+    "guarded": "^0.5.3",
+    "ramda": "^0.23.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
