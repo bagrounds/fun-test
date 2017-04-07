@@ -12,6 +12,12 @@
   module.exports = [
     [
       {
+        inputs: [5],
+        assertion: funAssert.equal(25)
+      }
+    ],
+    [
+      {
         action: function action (options) {
           return Task.of({ input: 4 })
         },

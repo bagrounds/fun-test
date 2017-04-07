@@ -13,10 +13,18 @@
   }
 
   function main () {
-    tests.map(function (tests) {
-      console.log('1..' + tests.length)
+    var testCount = tests
+      .map(function (array) {
+        return array.length
+      })
+      .reduce(function (a, b) {
+        return a + b
+      }, 0)
 
-      tests
+    console.log('1..' + testCount)
+
+    tests.map(function (tests) {
+      return tests
         .map(funTest.of)
         .reduce(funTest.concat, funTest.empty())({
           subject: subject,
