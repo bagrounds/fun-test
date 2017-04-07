@@ -47,7 +47,7 @@
   "devDependencies": {
     "eslint": "^3.19.0",
     "fun-assert": "^0.13.1",
-    "fun-test-runner": "^0.7.0",
+    "fun-test-runner": "latest",
     "jsdoc": "^3.4.3",
     "showdown": "^1.6.4",
     "tap": "^10.3.1"
