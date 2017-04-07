@@ -2,17 +2,20 @@
   'use strict'
 
   /* imports */
+  var nameFunction = require('../src/lib/name-function')
   var funTest = require('../src/')
   var tests = require('./tests')
   var id = require('fun-id')
+  var stringify = require('stringify-anything')
 
   main()
 
-  function subject (x) {
+  function square (x) {
     return x * x
   }
 
   function main () {
+    tests = tests.concat(tests)
     var testCount = tests
       .map(function (array) {
         return array.length
@@ -27,7 +30,7 @@
       return tests
         .map(funTest.of)
         .reduce(funTest.concat, funTest.empty())({
-          subject: subject,
+          subject: square,
           reporter: reporter
         }).fork(finalError, id)
     })
@@ -47,12 +50,18 @@
 
   function reportError (stuff) {
     console.log('not ok - an error:', stuff.error.message)
+    console.log(stringify(stuff))
 
     return stuff.error
   }
 
   function reportSuccess (stuff) {
-    console.log('ok - data:', stuff.data)
+    var message = 'ok - # ' +
+      nameFunction(stuff.action, [stuff.previous]) +
+      ' => ' +
+      stringify(stuff.data)
+
+    console.log(message)
 
     return stuff.data
   }
