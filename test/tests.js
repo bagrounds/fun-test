@@ -12,17 +12,17 @@
   module.exports = [
     [
       {
-        action: function action (state, subject) {
+        action: function action (options) {
           return Task.of({ input: 4 })
         },
         assertion: funAssert.type('Object')
       },
       {
-        action: function action (state, subject) {
-          state.result = subject(state.input)
+        action: function action (options) {
           // throw Error('shit blew up')
-
-          return Task.of(state)
+          return Task.of({
+            result: options.subject(options.data.input)
+          })
         },
         assertion: compose(
           funAssert.type('Number'),
@@ -30,7 +30,7 @@
         )
       },
       {
-        action: function action (state, subject) {
+        action: function action (options) {
           return Task.of('all done')
         },
         assertion: id

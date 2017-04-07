@@ -18,12 +18,12 @@
 
       tests
         .map(funTest.of)
-        .reduce(funTest.concat, funTest.empty())(
-          {},
-          subject,
-        {
-          error: errorReporter,
-          success: successReporter
+        .reduce(funTest.concat, funTest.empty())({
+          subject: subject,
+          reporter: {
+            error: errorReporter,
+            success: successReporter
+          }
         }).fork(finalError, id)
     })
   }
@@ -38,10 +38,10 @@
     return error
   }
 
-  function successReporter (state) {
-    console.log('ok - state:', state)
+  function successReporter (data) {
+    console.log('ok - data:', data)
 
-    return state
+    return data
   }
 })()
 
