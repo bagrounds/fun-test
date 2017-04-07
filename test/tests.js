@@ -18,6 +18,7 @@
     ],
     [
       {
+        comment: 'setting up',
         action: function getInput4 (options) {
           return Task.of({ input: 4 })
         },
@@ -35,6 +36,7 @@
         )
       },
       {
+        comment: 'tearing down',
         action: function allDone (options) {
           return Task.of('all done')
         },
