@@ -14,7 +14,7 @@
 
   function main () {
     runner({
-      tests: tests.concat(tests),
+      tests: tests,
       subject: square
     }).fork(finalError, id)
   }
