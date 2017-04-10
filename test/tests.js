@@ -7,13 +7,53 @@
   var lens = require('fun-lens')
   var compose = require('fun-compose')
   var id = require('fun-id')
+  var K = require('fun-constant')
+  var R = require('ramda')
+
+  function merge (options) {
+    return R.merge(options.data, options.result)
+  }
 
   /* exports */
   module.exports = [
     [
       {
-        inputs: [5],
+        mapData: K(5),
+        action: function apply5 (options) {
+          return Task.of(options.subject(5))
+        },
         assertion: funAssert.equal(25)
+      }
+    ],
+    [
+      {
+        comment: 'multistage',
+        mapData: K({ a: 'a' }),
+        update: merge
+      },
+      {
+        action: function (options) {
+          return Task.of({ b: 'b' })
+        },
+        update: merge
+      },
+      {
+        action: function (options) {
+          return Task.of({ c: 'c' })
+        },
+        update: merge
+      },
+      {
+        mapData: R.pick('b'),
+        action: function (options) {
+          return Task.of(options.data)
+        },
+        update: merge
+      },
+      {
+        action: function (options) {
+          return Task.of(options.data)
+        }
       }
     ],
     [
