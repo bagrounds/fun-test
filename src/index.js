@@ -9,7 +9,7 @@
   var object = require('fun-object')
 
   var merge = object.concat(function (a, b) {
-    return a === undefined ? b : a
+    return b === undefined ? a : b
   })
 
   var defaultConfig = {
