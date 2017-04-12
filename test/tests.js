@@ -8,10 +8,14 @@
   var compose = require('fun-compose')
   var id = require('fun-id')
   var K = require('fun-constant')
-  var R = require('ramda')
+  var object = require('fun-object')
+
+  var objectMerge = object.concat(function (a, b) {
+    return a === undefined ? b : a
+  })
 
   function merge (options) {
-    return R.merge(options.data, options.result)
+    return objectMerge(options.data || {}, options.result || {})
   }
 
   /* exports */
@@ -44,7 +48,7 @@
         update: merge
       },
       {
-        mapData: R.pick('b'),
+        mapData: object.keep(['b']),
         action: function (options) {
           return Task.of(options.data)
         },

@@ -35,16 +35,12 @@
   "homepage": "https://gitlab.com/bagrounds/fun-test#README",
   "dependencies": {
     "data.task": "^3.1.1",
-    "fun-apply": "^0.2.0",
-    "fun-case": "^0.1.1",
     "fun-compose": "^0.3.3",
     "fun-constant": "^0.1.1",
     "fun-id": "^0.1.0",
     "fun-lens": "^0.2.1",
-    "fun-object": "^0.2.0",
-    "fun-predicate": "^0.14.8",
-    "fun-try": "^0.1.0",
-    "ramda": "^0.23.0"
+    "fun-object": "^0.3.0",
+    "fun-try": "^0.1.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

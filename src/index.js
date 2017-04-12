@@ -6,8 +6,11 @@
   var funTry = require('fun-try')
   var id = require('fun-id')
   var compose = require('fun-compose')
-  var R = require('ramda')
   var object = require('fun-object')
+
+  var merge = object.concat(function (a, b) {
+    return a === undefined ? b : a
+  })
 
   var defaultConfig = {
     mapData: id,
@@ -32,8 +35,8 @@
     return function (options) {
       return Task.of(options)
         .chain(t1)
-        .map(R.objOf('data'))
-        .map(R.merge(options))
+        .map(object.of('data'))
+        .map(merge(options))
         .chain(t2)
     }
   }
@@ -52,20 +55,20 @@
    * @return ({data, subject, reporter}) -> Task Data
    */
   function of (config) {
-    config = R.merge(defaultConfig, config)
+    config = merge(defaultConfig, config)
     return function (options) {
       return Task.of(options)
-        .map(R.pick(['data', 'subject']))
+        .map(object.keep(['data', 'subject']))
         .map(object.ap({ data: config.mapData, subject: config.mapSubject }))
         .chain(funTry(config.action))
         .chain(id)
         .chain(funTry(config.assertion))
-        .map(R.objOf('result'))
-        .orElse(compose(Task.of, R.objOf('error')))
-        .map(R.merge({ data: options.data, subject: options.subject }))
-        .map(R.merge(config))
+        .map(object.of('result'))
+        .orElse(compose(Task.of, object.of('error')))
+        .map(merge({ data: options.data, subject: options.subject }))
+        .map(merge(config))
         .map(passThrough(options.reporter))
-        .map(R.pick(['data', 'result', 'error']))
+        .map(object.keep(['data', 'result', 'error']))
         .map(config.update)
     }
   }
