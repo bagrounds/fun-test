@@ -27,7 +27,7 @@
   /* exports */
   module.exports = {
     concat: concat,
-    of: of,
+    of: compose(of, merge(defaultConfig)),
     empty: empty
   }
 
@@ -55,7 +55,6 @@
    * @return ({data, subject, reporter}) -> Task Data
    */
   function of (config) {
-    config = merge(defaultConfig, config)
     return function (options) {
       return Task.of(options)
         .map(object.keep(['data', 'subject']))
