@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "pretest": "npm run lint",
-    "test": "tap -Rtap --coverage-report=text-summary ./test/index.js",
+    "test": "tap -Rtap --coverage-report=text-summary ./test/index.js ./test/self-test-runner.js",
     "coverage": "tap --coverage-report=lcov ./test/index.js",
     "predependencies": "mkdir -p img",
     "dependencies": "madge . --image img/dependencies.svg -x 'test|coverage|docs' --include-npm",
