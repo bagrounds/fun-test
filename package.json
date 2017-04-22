@@ -36,18 +36,20 @@
   "dependencies": {
     "data.task": "^3.1.1",
     "fun-compose": "^0.3.3",
-    "fun-constant": "^0.1.1",
-    "fun-id": "^0.1.0",
-    "fun-lens": "^0.2.1",
-    "fun-object": "^0.3.0",
+    "fun-object": "^0.4.0",
     "fun-try": "^0.1.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
     "fun-assert": "^0.13.1",
-    "fun-test-runner": "latest",
+    "fun-constant": "^0.1.1",
+    "fun-id": "^0.1.0",
+    "fun-lens": "^0.2.1",
     "jsdoc": "^3.4.3",
+    "json-stringify-safe": "^5.0.1",
     "showdown": "^1.6.4",
-    "tap": "^10.3.1"
+    "stringify-anything": "^0.5.7",
+    "tap": "^10.3.1",
+    "test-anything-protocol": "^0.2.0"
   }
 }
