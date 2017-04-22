@@ -4,7 +4,6 @@
   /* imports */
   var Task = require('data.task')
   var funTry = require('fun-try')
-  var id = require('fun-id')
   var compose = require('fun-compose')
   var object = require('fun-object')
 
@@ -66,17 +65,9 @@
         .orElse(compose(Task.of, object.of('error')))
         .map(merge({ data: options.data, subject: options.subject }))
         .map(merge(config))
-        .map(passThrough(options.reporter))
+        .chain(options.reporter)
         .map(object.keep(['data', 'result', 'error']))
         .map(config.update)
-    }
-  }
-
-  function passThrough (f) {
-    return function (subject) {
-      f(subject)
-
-      return subject
     }
   }
 
@@ -84,6 +75,10 @@
     return function (options) {
       return Task.of()
     }
+  }
+
+  function id (x) {
+    return x
   }
 })()
 
