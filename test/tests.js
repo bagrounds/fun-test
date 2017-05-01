@@ -2,91 +2,49 @@
   'use strict'
 
   /* imports */
-  var Task = require('data.task')
-  var funAssert = require('fun-assert')
-  var lens = require('fun-lens')
-  var compose = require('fun-compose')
-  var id = require('fun-id')
-  var K = require('fun-constant')
+  // var Task = require('data.task')
+  // var fn = require('fun-function')
+  var predicate = require('fun-predicate')
   var object = require('fun-object')
-
-  var objectMerge = object.concat(function (a, b) {
-    return a === undefined ? b : a
-  })
-
-  function merge (options) {
-    return objectMerge(options.data || {}, options.result || {})
-  }
+  var funTest = require('../src')
+  var arrange = require('fun-arrange')
+  // var array = require('fun-array')
 
   /* exports */
   module.exports = [
-    [
-      {
-        mapData: K(5),
-        action: function apply5 (options) {
-          return Task.of(options.subject(5))
-        },
-        assertion: funAssert.equal(25)
-      }
-    ],
-    [
-      {
-        comment: 'multistage',
-        mapData: K({ a: 'a' }),
-        update: merge
-      },
-      {
-        action: function (options) {
-          return Task.of({ b: 'b' })
-        },
-        update: merge
-      },
-      {
-        action: function (options) {
-          return Task.of({ c: 'c' })
-        },
-        update: merge
-      },
-      {
-        mapData: object.keep(['b']),
-        action: function (options) {
-          return Task.of(options.data)
-        },
-        update: merge
-      },
-      {
-        action: function (options) {
-          return Task.of(options.data)
-        }
-      }
-    ],
-    [
-      {
-        comment: 'setting up',
-        action: function getInput4 (options) {
-          return Task.of({ input: 4 })
-        },
-        assertion: funAssert.type('Object')
-      },
-      {
-        action: function applySubjectToDataInput (options) {
-          return Task.of({
-            result: options.subject(options.data.input)
-          })
-        },
-        assertion: compose(
-          funAssert.type('Number'),
-          lens.get(['result'])
-        )
-      },
-      {
-        comment: 'tearing down',
-        action: function allDone (options) {
-          return Task.of('all done')
-        },
-        assertion: id
-      }
-    ]
-  ]
+    [[0, 1], 1],
+    [[3, 4], 7],
+    [[2, 6], 8],
+    [[9, -3], 6]
+  ].map(arrange({ inputs: 0, predicate: 1 }))
+    .map(object.ap({ predicate: predicate.equal }))
+    .map(object.set('contra', object.get('add')))
+    .map(funTest.sync)
+
+  // module.exports = [
+    // funTest.sync({
+      // predicate: predicate.equal(7),
+      // inputs: [3, 4],
+      // contra: object.get('add')
+    // }),
+    // fn.composeAll([
+      // Task.of,
+      // predicate.equal(3),
+      // fn.apply([1, 2]),
+      // object.get('add')
+    // ]),
+    // fn.composeAll([
+      // Task.of,
+      // predicate.equal(5),
+      // fn.apply([2, 3]),
+      // object.get('add')
+    // ]),
+    // fn.composeAll([
+      // Task.of,
+      // predicate.equal(3),
+      // fn.apply([2, 1]),
+      // object.get('add')
+    // ])
+  // ]
 })()
 

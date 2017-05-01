@@ -6,6 +6,7 @@
   var funTry = require('fun-try')
   var compose = require('fun-compose')
   var object = require('fun-object')
+  var fn = require('fun-function')
 
   var merge = object.concat(function (a, b) {
     return b === undefined ? a : b
@@ -27,7 +28,29 @@
   module.exports = {
     concat: concat,
     of: compose(of, merge(defaultConfig)),
-    empty: empty
+    empty: empty,
+    sync: sync
+  }
+
+  /**
+   *
+   * @function module:fun-test.sync
+   *
+   * @param {Object} options - all input parameters
+   * @param {Function} options.predicate - to check result
+   * @param {Array} options.inputs - to feed to test function
+   * @param {Function} options.action - to use instead of apply
+   * @param {Function} options.contra - preapplied ot subject
+   *
+   * @return {Function} subject -> Task(Boolean)
+   */
+  function sync (options) {
+    return fn.composeAll([
+      Task.of,
+      options.predicate,
+      (options.action || fn.apply)(options.inputs),
+      (options.contra || fn.id)
+    ])
   }
 
   function concat (t1, t2) {

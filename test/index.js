@@ -4,23 +4,22 @@
   /* imports */
   var tests = require('./tests')
   var id = require('fun-id')
-  var runner = require('./fun-test-runner')
+  var runner = require('./runner')
+
+  var subject = {
+    add: function (a, b) {
+      return a + b
+    }
+  }
 
   main()
 
-  function square (x) {
-    return x * x
-  }
-
   function main () {
-    runner({
-      tests: tests,
-      subject: square
-    }).fork(finalError, id)
+    runner(tests, subject).fork(testError, id)
   }
 
-  function finalError (error) {
-    console.error('FINAL_ERROR:' + error.message)
+  function testError (error) {
+    console.error('TEST_ERROR:' + error.message)
   }
 })()
 

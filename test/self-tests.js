@@ -6,6 +6,9 @@
   var funAssert = require('fun-assert')
   var K = require('fun-constant')
   var object = require('fun-object')
+  var fn = require('fun-function')
+  var lens = require('fun-lens')
+  var arrange = require('fun-arrange')
 
   /* exports */
   module.exports = [
@@ -16,9 +19,10 @@
           }
         ]),
         mapSubject: object.get('of'),
-        action: function applySubjectData (options) {
-          return Task.of(options.subject(options.data))
-        },
+        action: fn.compose(Task.of, fn.applyFrom({
+          inputs: arrange(['data']),
+          f: lens.get(['subject'])
+        })),
         assertion: funAssert.type('Function')
       },
       {
