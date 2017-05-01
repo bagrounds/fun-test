@@ -1,6 +1,6 @@
 # [fun-test](https://bagrounds.gitlab.io/fun-test)
 
-A simple function tester
+Task based tester
 
 [![build-status](https://gitlab.com/bagrounds/fun-test/badges/master/build.svg)](https://gitlab.com/bagrounds/fun-test/commits/master)
 [![coverage-report](https://gitlab.com/bagrounds/fun-test/badges/master/coverage.svg)](https://gitlab.com/bagrounds/fun-test/commits/master)
@@ -12,7 +12,7 @@ A simple function tester
 
 ## [Test Coverage](https://bagrounds.gitlab.io/fun-test/coverage/lcov-report/index.html)
 
-## [API Docs](https://bagrounds.gitlab.io/fun-test/docs/index.html)
+## [API Docs](https://bagrounds.gitlab.io/fun-test/index.html)
 
 ## Dependencies
 

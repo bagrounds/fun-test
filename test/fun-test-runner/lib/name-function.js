@@ -1,7 +1,3 @@
-/**
- *
- * @module fun-curry
- */
 ;(function () {
   'use strict'
 

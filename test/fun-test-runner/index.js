@@ -1,7 +1,3 @@
-/**
- *
- * @module fun-test-runner
- */
 ;(function () {
   'use strict'
 

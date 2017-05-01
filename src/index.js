@@ -1,3 +1,7 @@
+/**
+ *
+ * @module fun-test
+ */
 ;(function () {
   'use strict'
 
@@ -65,6 +69,8 @@
 
   /**
    *
+   * @function module:fun-test.of
+   *
    * @param {Object} config - all function parameters
    * @param {Function} config.mapData - Data -> Data
    * @param {Function} config.mapSubject - Subject -> Subject
@@ -74,7 +80,7 @@
    * @param {String} config.comment - for the reporter
    * @param {Number} config.timeout - in ms
    *
-   * @return ({data, subject, reporter}) -> Task Data
+   * @return {Function} ({data, subject, reporter}) -> Task Data
    */
   function of (config) {
     return function (options) {
