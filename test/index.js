@@ -3,7 +3,6 @@
 
   /* imports */
   var tests = require('./tests')
-  var id = require('fun-id')
   var runner = require('./runner')
 
   var subject = {
@@ -20,6 +19,10 @@
 
   function testError (error) {
     console.error('TEST_ERROR:' + error.message)
+  }
+
+  function id (x) {
+    return x
   }
 })()
 
