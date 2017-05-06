@@ -4,7 +4,6 @@
   /* imports */
   var Task = require('data.task')
   var funAssert = require('fun-assert')
-  var K = require('fun-constant')
   var object = require('fun-object')
   var fn = require('fun-function')
   var lens = require('fun-lens')
@@ -14,7 +13,7 @@
   module.exports = [
     [
       {
-        mapData: K([
+        mapData: fn.k([
           {
           }
         ]),

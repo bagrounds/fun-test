@@ -2,7 +2,6 @@
   'use strict'
 
   /* imports */
-  var id = require('fun-id')
   var runner = require('./fun-test-runner')
   var subject = require('../src')
   var tests = require('./self-tests')
@@ -18,6 +17,10 @@
 
   function finalError (error) {
     console.error('FINAL_ERROR:' + error.message)
+  }
+
+  function id (x) {
+    return x
   }
 })()
 

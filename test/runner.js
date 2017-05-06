@@ -5,10 +5,9 @@
   var Task = require('data.task')
   var fn = require('fun-function')
   var array = require('fun-array')
-  var curry = require('fun-curry')
 
   /* exports */
-  module.exports = curry(runner)
+  module.exports = fn.curry(runner)
 
   function runner (tests, subject) {
     return fn.compose(
