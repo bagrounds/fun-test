@@ -8,7 +8,6 @@
   /* imports */
   var Task = require('data.task')
   var funTry = require('fun-try')
-  var compose = require('fun-compose')
   var object = require('fun-object')
   var fn = require('fun-function')
 
@@ -31,7 +30,7 @@
   /* exports */
   module.exports = {
     concat: concat,
-    of: compose(of, merge(defaultConfig)),
+    of: fn.compose(of, merge(defaultConfig)),
     empty: empty,
     sync: sync
   }
@@ -91,7 +90,7 @@
         .chain(id)
         .chain(funTry(config.assertion))
         .map(object.of('result'))
-        .orElse(compose(Task.of, object.of('error')))
+        .orElse(fn.compose(Task.of, object.of('error')))
         .map(merge({ data: options.data, subject: options.subject }))
         .map(merge(config))
         .chain(options.reporter)
