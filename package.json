@@ -24,8 +24,7 @@
   },
   "keywords": [
     "test",
-    "function",
-    "simple"
+    "function"
   ],
   "author": "bagrounds <bagrounds@gmail.com>",
   "license": "MIT",
@@ -35,25 +34,18 @@
   "homepage": "https://gitlab.com/bagrounds/fun-test#README",
   "dependencies": {
     "data.task": "^3.1.1",
-    "fun-arrange": "^0.1.0",
-    "fun-array": "^0.5.0",
-    "fun-compose": "^0.3.3",
-    "fun-curry": "^0.2.6",
-    "fun-function": "^0.4.0",
-    "fun-object": "^0.5.3",
-    "fun-predicate": "^0.15.2",
+    "fun-function": "^0.7.3",
+    "fun-object": "^0.6.1",
     "fun-try": "^0.1.0"
   },
   "devDependencies": {
+    "docdash": "^0.4.0",
     "eslint": "^3.19.0",
-    "madge": "^1.6.0",
     "fun-assert": "^0.13.1",
-    "fun-constant": "^0.1.1",
-    "fun-id": "^0.1.0",
     "fun-lens": "^0.2.1",
     "jsdoc": "^3.4.3",
     "json-stringify-safe": "^5.0.1",
-    "docdash": "^0.4.0",
+    "madge": "^1.6.0",
     "stringify-anything": "^0.5.7",
     "tap": "^10.3.1",
     "test-anything-protocol": "^0.2.0"
