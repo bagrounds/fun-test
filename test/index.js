@@ -8,6 +8,9 @@
   var subject = {
     add: function (a, b) {
       return a + b
+    },
+    addAsync: function (a, b, callback) {
+      callback(null, a + b)
     }
   }
 
