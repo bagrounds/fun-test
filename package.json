@@ -1,6 +1,6 @@
 {
   "name": "fun-test",
-  "version": "0.22.2",
+  "version": "0.23.0",
   "description": "Task based tester",
   "main": "src/index.js",
   "scripts": {
