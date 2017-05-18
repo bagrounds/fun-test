@@ -17,15 +17,11 @@
   main()
 
   function main () {
-    runner(tests, subject).fork(testError, id)
-  }
-
-  function testError (error) {
-    console.error('TEST_ERROR:' + error.message)
-  }
-
-  function id (x) {
-    return x
+    runner({ tests: tests, subject: subject }, function (error) {
+      if (error) {
+        throw error
+      }
+    })
   }
 })()
 

@@ -6,12 +6,12 @@
   'use strict'
 
   /* imports */
-  var Task = require('data.task')
   var fn = require('fun-function')
   var array = require('fun-array')
   var setProp = require('set-prop')
   var stringify = require('stringify-anything')
   var object = require('fun-object')
+  var async = require('fun-async')
 
   var defaultSync = {
     contra: fn.id,
@@ -27,8 +27,8 @@
 
   /* exports */
   module.exports = {
-    sync: fn.compose(sync, object.defaults(defaultSync)),
-    async: fn.compose(async, object.defaults(defaultAsync))
+    sync: fn.compose(testSync, object.defaults(defaultSync)),
+    async: fn.compose(testAsync, object.defaults(defaultAsync))
   }
 
   /**
@@ -41,26 +41,21 @@
    * @param {Function} [options.action] - to use instead of apply
    * @param {Array} [options.inputs] - to apply to contra(subject)
    *
-   * @return {Function} subject -> Task(Boolean)
+   * @return {Function} (subject, callback) ~> [Error, Boolean]
    */
-  function async (options) {
-    return setProp('name', nameFunction(options), function (subject) {
-      return new Task(function (onError, onSuccess) {
-        function callback () {
-          onSuccess(options.predicate(array.from(arguments)))
-        }
+  function testAsync (options) {
+    return setProp('name', nameFunction(options), function (subject, callback) {
+      options.action(array.append(cb, options.inputs), options.contra(subject))
 
-        options.action(
-          array.append(callback, options.inputs),
-          options.contra(subject)
-        )
-      })
+      function cb () {
+        callback(null, options.predicate(array.from(arguments)))
+      }
     })
   }
 
   /**
    *
-   * @function module:fun-test.sync
+   * @function module:fun-test.testSync
    *
    * @param {Object} options - all input parameters
    * @param {Function} options.predicate - to apply to callback arguments
@@ -68,15 +63,14 @@
    * @param {Function} [options.action] - to use instead of apply
    * @param {Array} [options.inputs] - to apply to contra(subject)
    *
-   * @return {Function} subject -> Task(Boolean)
+   * @return {Function} (subject, callback) ~> [Error, Boolean]
    */
-  function sync (options) {
-    return setProp('name', nameFunction(options), fn.composeAll([
-      Task.of,
+  function testSync (options) {
+    return setProp('name', nameFunction(options), async.of(fn.composeAll([
       options.predicate,
       options.action(options.inputs),
       options.contra
-    ]))
+    ])))
   }
 
   /**

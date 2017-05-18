@@ -2,60 +2,50 @@
   'use strict'
 
   /* imports */
-  var Task = require('data.task')
   var fn = require('fun-function')
-  var array = require('fun-array')
+  var async = require('fun-async')
+  var object = require('fun-object')
+  var scalar = require('fun-scalar')
 
   /* exports */
   module.exports = fn.curry(runner)
 
-  function runner (tests, subject) {
-    return fn.compose(
-      array.fold(
-        combine,
-        init,
-        tests.map(embelish)
-      ),
-      lift
-    )(subject)
+  function runner (options, callback) {
+    console.log('1..' + options.tests.length)
 
-    function init (subject) {
-      return new Task(function (onError, onSuccess) {
-        console.log('1..' + tests.length)
-        onSuccess(subject)
-      })
+    var input = {
+      subject: options.subject,
+      number: 0
     }
 
-    function lift (s) {
-      return [0, s]
-    }
+    async.composeAll(
+      options.tests.map(lift)
+    )(input, callback)
 
-    function combine (t1, t2) {
-      return function (s) {
-        return t1(s).chain(t2)
-      }
-    }
-  }
-
-  function embelish (test) {
-    return function (pair) {
-      return test(pair[1])
-        .map(lift)
-        .chain(report)
-
-      function lift (x) {
-        return [pair[0] + 1, pair[1], x, test]
+    function lift (test) {
+      return function (options, callback) {
+        test(options.subject, function (error, result) {
+          if (error) {
+            throw error
+          }
+          callback(
+            error,
+            fn.compose(fn.tee(report), object.ap({
+              number: scalar.sum(1),
+              result: fn.k(result),
+              test: fn.k(test)
+            }))(options)
+          )
+        })
       }
     }
   }
 
   function report (result) {
-    var message = (result[2] ? 'ok' : 'not ok') +
-      ' ' + result[0] + ' - ' + result[3].name
+    var message = (result.result ? 'ok' : 'not ok') +
+      ' ' + result.number + ' - ' + result.test.name
 
     console.log(message)
-
-    return Task.of(result)
   }
 })()
 

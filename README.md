@@ -1,6 +1,6 @@
 # [fun-test](https://bagrounds.gitlab.io/fun-test)
 
-Task based tester
+Functions for writing tests functionally
 
 [![build-status](https://gitlab.com/bagrounds/fun-test/badges/master/build.svg)](https://gitlab.com/bagrounds/fun-test/commits/master)
 [![coverage-report](https://gitlab.com/bagrounds/fun-test/badges/master/coverage.svg)](https://gitlab.com/bagrounds/fun-test/commits/master)
