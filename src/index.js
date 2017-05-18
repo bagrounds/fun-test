@@ -55,7 +55,7 @@
 
   /**
    *
-   * @function module:fun-test.testSync
+   * @function module:fun-test.sync
    *
    * @param {Object} options - all input parameters
    * @param {Function} options.predicate - to apply to callback arguments
