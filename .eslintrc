@@ -1,4 +1,7 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
   "env": {
     "node": true,
     "mocha": true
@@ -312,7 +315,12 @@
     ],
     "max-len": 2,
     "max-depth": 2,
-    "max-params": 2,
+    "max-params": [
+      2,
+      {
+        "max": 4
+      }
+    ],
     "max-statements": [
       2,
       {

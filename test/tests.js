@@ -1,38 +1,51 @@
-;(function () {
+;(() => {
   'use strict'
 
   /* imports */
-  var predicate = require('fun-predicate')
-  var object = require('fun-object')
-  var funTest = require('../src')
-  var arrange = require('fun-arrange')
-  var fn = require('fun-function')
-  var array = require('fun-array')
+  const { equal } = require('fun-predicate')
+  const { set, ap, get } = require('fun-object')
+  const { async, sync } = require('..')
+  const arrange = require('fun-arrange')
+  const { composeAll, contramap, k } = require('fun-function')
+  const { concat, map } = require('fun-array')
+
+  const mockSubject = {
+    add: (a, b) => a + b,
+    addAsync: (a, b, callback) => callback(null, a + b)
+  }
 
   /* exports */
-  var async = [
-    [[0, 1], predicate.equal(1)],
-    [[3, 4], predicate.equal(7)],
-    [[2, 6], predicate.equal(8)],
-    [[9, -3], predicate.equal(6)]
-  ].map(arrange({ inputs: 0, predicate: 1, contra: 2 }))
-    .map(object.ap({
-      predicate: fn.contramap(array.get(1))
-    }))
-    .map(object.set('contra', object.get('addAsync')))
-    .map(funTest.async)
+  const asyncTests = map(
+    composeAll([
+      async,
+      set('contra', k(get('addAsync', mockSubject))),
+      ap({ predicate: contramap(get(1)) }),
+      arrange({ inputs: 0, predicate: 1, contra: 2 })
+    ]),
+    [
+      [[0, 1], equal(1)],
+      [[3, 4], equal(7)],
+      [[2, 6], equal(8)],
+      [[9, -3], equal(6)]
+    ]
+  )
 
-  var sync = [
-    [[0, 1], 1],
-    [[3, 4], 7],
-    [[2, 6], 8],
-    [[9, -3], 6]
-  ].map(arrange({ inputs: 0, predicate: 1 }))
-    .map(object.ap({ predicate: predicate.equal }))
-    .map(object.set('contra', object.get('add')))
-    .map(funTest.sync)
+  const syncTests = map(
+    composeAll([
+      sync,
+      set('contra', k(get('add', mockSubject))),
+      ap({ predicate: equal }),
+      arrange({ inputs: 0, predicate: 1 })
+    ]),
+    [
+      [[0, 1], 1],
+      [[3, 4], 7],
+      [[2, 6], 8],
+      [[9, -3], 6]
+    ]
+  )
 
   /* exports */
-  module.exports = sync.concat(async)
+  module.exports = concat(syncTests, asyncTests)
 })()
 

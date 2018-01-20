@@ -2,34 +2,22 @@
  *
  * @module fun-test
  */
-;(function () {
+;(() => {
   'use strict'
 
   /* imports */
-  var fn = require('fun-function')
-  var array = require('fun-array')
-  var setProp = require('set-prop')
-  var stringify = require('stringify-anything')
-  var object = require('fun-object')
-  var async = require('fun-async')
+  const { id, apply, pipe, compose, composeAll } = require('fun-function')
+  const setProp = require('set-prop')
+  const stringify = require('stringify-anything')
+  const { map, ap, defaults: objDefaults } = require('fun-object')
+  const { of: asyncOf } = require('fun-async')
+  const { inputs, output } = require('guarded')
+  const { array, fun, tuple, record } = require('fun-type')
 
-  var defaultSync = {
-    contra: fn.id,
-    inputs: [],
-    action: fn.apply
-  }
+  const defaults = { contra: id, inputs: [], action: apply }
 
-  var defaultAsync = {
-    contra: fn.id,
-    inputs: [null],
-    action: fn.apply
-  }
-
-  /* exports */
-  module.exports = {
-    sync: fn.compose(testSync, object.defaults(defaultSync)),
-    async: fn.compose(testAsync, object.defaults(defaultAsync))
-  }
+  const nameFunction = ({ predicate, contra, inputs, action }) =>
+    stringify(composeAll([predicate, action(inputs), contra]))
 
   /**
    *
@@ -43,15 +31,14 @@
    *
    * @return {Function} (subject, callback) ~> [Error, Boolean]
    */
-  function testAsync (options) {
-    return setProp('name', nameFunction(options), function (subject, callback) {
-      options.action(array.append(cb, options.inputs), options.contra(subject))
-
-      function cb () {
-        callback(null, options.predicate(array.from(arguments)))
-      }
-    })
-  }
+  const async = ({ predicate, action, inputs, contra }) => setProp(
+    'name',
+    nameFunction({ predicate, action, inputs, contra }),
+    (subject, callback) => action(
+      [...inputs, (...args) => callback(null, predicate(args))],
+      contra(subject)
+    )
+  )
 
   /**
    *
@@ -65,26 +52,30 @@
    *
    * @return {Function} (subject, callback) ~> [Error, Boolean]
    */
-  function testSync (options) {
-    return setProp('name', nameFunction(options), async.of(fn.composeAll([
-      options.predicate,
-      options.action(options.inputs),
-      options.contra
-    ])))
-  }
+  const sync = ({ predicate, action, inputs, contra }) => setProp(
+    'name',
+    nameFunction({ predicate, action, inputs, contra }),
+    asyncOf(composeAll([predicate, action(inputs), contra]))
+  )
 
-  /**
-   *
-   * @param {Object} options - all input parameters
-   * @param {Function} options.predicate - to apply to results
-   * @param {Function} options.contra - to apply to subject prior to calling
-   * @param {Array} options.inputs - to apply to contra(subject)
-   *
-   * @return {String} representation of test function
-   */
-  function nameFunction (options) {
-    return options.predicate.name + '.apply(' +
-      stringify(options.inputs) + ').' + options.contra.name
-  }
+  /* exports */
+  const api = { sync, async }
+
+  const guards = map(compose(output(fun)), {
+    sync: inputs(tuple([record({
+      predicate: fun,
+      action: fun,
+      inputs: array,
+      contra: fun
+    })])),
+    async: inputs(tuple([record({
+      predicate: fun,
+      action: fun,
+      inputs: array,
+      contra: fun
+    })]))
+  })
+
+  module.exports = map(pipe(objDefaults(defaults)), ap(guards, api))
 })()
 

@@ -1,27 +1,15 @@
-;(function () {
+#!/usr/bin/env node
+;(() => {
   'use strict'
 
   /* imports */
-  var tests = require('./tests')
-  var runner = require('./runner')
+  const runner = require('fun-test-runner')
+  const tests = require('./tests')
+  const subject = require('..')
 
-  var subject = {
-    add: function (a, b) {
-      return a + b
-    },
-    addAsync: function (a, b, callback) {
-      callback(null, a + b)
-    }
-  }
-
-  main()
-
-  function main () {
-    runner({ tests: tests, subject: subject }, function (error) {
-      if (error) {
-        throw error
-      }
-    })
-  }
+  runner({ tests, subject }, (error, result) => {
+    error && console.error(error)
+    console.log(result)
+  })
 })()
 
