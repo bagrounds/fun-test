@@ -1,6 +1,6 @@
 {
   "name": "fun-test",
-  "version": "0.24.1",
+  "version": "0.25.0",
   "description": "Functions for writing tests functionally",
   "main": "src/index.js",
   "browser": "dist/bundle.js",
